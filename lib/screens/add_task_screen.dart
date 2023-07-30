@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:task_app/services/guid_generator.dart';
 
 import '../bloc/bloc_exports.dart';
 import '../models/task.dart';
 
 class AddTaskScreen extends StatelessWidget {
+    static const routeName = '/add-task-screen'; 
   const AddTaskScreen({
     super.key,
   });
@@ -42,7 +44,9 @@ class AddTaskScreen extends StatelessWidget {
                   child: const Text('Cancel')),
               ElevatedButton(
                   onPressed: () {
-                    var task = Task(title: titleController.text);
+                    var task = Task(
+                      id: GUIDGen.generate(),
+                      title: titleController.text);
 
                     context.read<TasksBloc>().add(
                           AddTask(task: task),
