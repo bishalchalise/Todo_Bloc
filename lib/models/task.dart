@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: must_be_immutable
 
 import 'package:equatable/equatable.dart';
@@ -6,22 +5,32 @@ import 'package:equatable/equatable.dart';
 class Task extends Equatable {
   final String id;
   final String title;
+  final String description;
+  final String date;
+  bool? isFavourite;
   bool? isDone;
   bool? isDeleted;
   Task({
     required this.id,
+    required this.description,
     required this.title,
+    required this.date,
+    this.isFavourite,
     this.isDone,
     this.isDeleted,
   }) {
     isDone = isDone ?? false;
     isDeleted = isDeleted ?? false;
+    isFavourite = isFavourite ?? false;
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'title': title,
+      'description': description,
+      'date': date,
+      'isFavourite': isFavourite,
       'isDone': isDone,
       'isDeleted': isDeleted,
     };
@@ -31,8 +40,32 @@ class Task extends Equatable {
     return Task(
       id: map['id'] ?? '',
       title: map['title'] ?? '',
-      isDone: map['isDone'],
-      isDeleted: map['isDeleted'],
+      description: map['description'] ?? '',
+      date: map['date'] ?? '',
+      isFavourite:
+          map['isFavourite'] != null ? map['isFavourite'] as bool : null,
+      isDone: map['isDone'] != null ? map['isDone'] as bool : null,
+      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
+    );
+  }
+
+  Task copyWith({
+    String? id,
+    String? title,
+    String? description,
+    String? date,
+    bool? isFavourite,
+    bool? isDone,
+    bool? isDeleted,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      date: date ?? this.date,
+      isFavourite: isFavourite ?? this.isFavourite,
+      isDone: isDone ?? this.isDone,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 
@@ -40,21 +73,10 @@ class Task extends Equatable {
   List<Object?> get props => [
         id,
         title,
+        description,
+        date,
+        isFavourite,
         isDone,
         isDeleted,
       ];
-
-  Task copyWith({
-    String? id,
-    String? title,
-    bool? isDone,
-    bool? isDeleted,
-  }) {
-    return Task(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      isDone: isDone ?? this.isDone,
-      isDeleted: isDeleted ?? this.isDeleted,
-    );
-  }
 }

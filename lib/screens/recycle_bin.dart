@@ -13,15 +13,26 @@ class RecycleBin extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
-      
         return Scaffold(
           appBar: AppBar(
             elevation: 0,
             title: const Text('Recycle Bin'),
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
+              PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: TextButton.icon(
+                      onPressed: null,
+                      icon: const Icon(
+                        Icons.delete_forever,
+                      ),
+                      label: const Text('Delete All Tasks'),
+                    ),
+                    onTap: () => context.read<TasksBloc>().add(
+                          DeleteAllTaskEvent(),
+                        ),
+                  )
+                ],
               )
             ],
           ),

@@ -4,13 +4,13 @@ import '../models/task.dart';
 import '../widgets/tasks_list.dart';
 
 class FavouriteTasksScreen extends StatelessWidget {
-  static const routeName = '/pending-tasks-screen';
+  static const routeName = '/favourite-tasks-screen';
   const FavouriteTasksScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
-        List<Task> taskList = state.allTasks;
+        List<Task> taskList = state.favouriteTasks;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,

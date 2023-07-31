@@ -1,34 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/screens/pending_tasks.dart';
+import 'package:task_app/screens/completed_tasks_screen.dart';
+import 'package:task_app/screens/favourite_tasks_screen.dart';
+import 'package:task_app/screens/pending_screen.dart';
+
 import 'package:task_app/screens/task_drawer.dart';
 
 import 'add_task_screen.dart';
 
-class TabsScreen extends StatelessWidget {
+class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs-screen';
   const TabsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    _addTask(BuildContext context) {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: const AddTaskScreen(),
-            ),
-          );
-        },
-      );
-    }
+  State<TabsScreen> createState() => _TabsScreenState();
+}
 
+class _TabsScreenState extends State<TabsScreen> {
+  final List<Map<String, dynamic>> _pageDetails = [
+    {
+      'pageName': const PendingTasksScreen(),
+      'title': 'Pending Tasks',
+    },
+    {
+      'pageName': const CompletedTasksScreen(),
+      'title': 'Completed Tasks',
+    },
+    {
+      'pageName': const FavouriteTasksScreen(),
+      'title': 'Favourite Tasks',
+    }
+  ];
+
+  var _selectedIndex = 0;
+
+  _addTask(BuildContext context) {
+    showModalBottomSheet(isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: const AddTaskScreen(),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tabs Screen'),
+        elevation: 0,
+        title:  Text(_pageDetails[_selectedIndex]['title']),
         actions: [
           IconButton(
             onPressed: () => _addTask(context),
@@ -36,26 +62,32 @@ class TabsScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const TasksScreen(),
+      body: _pageDetails[_selectedIndex]['pageName'],
       drawer: const TaskDrawer(),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: 
+      _selectedIndex == 0 ?
+      FloatingActionButton(
         onPressed: () => _addTask(context),
         tooltip: 'Add Task',
         child: const Icon(Icons.add),
-      ),
+      ):  null,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        onTap: (value) {},
+        currentIndex: _selectedIndex,
+        onTap: (value) {
+          setState(() {
+            _selectedIndex = value;
+          });
+        },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: Icon(Icons.incomplete_circle),
             label: 'Pending Tasks',
           ),
-           BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.done),
             label: 'Completed Tasks',
           ),
-           BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favourite Tasks',
           ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:task_app/screens/recycle_bin.dart';
 import 'package:task_app/screens/tabs_screen.dart';
 
-
 import '../bloc/bloc_exports.dart';
 
 class TaskDrawer extends StatelessWidget {
@@ -35,10 +34,9 @@ class TaskDrawer extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    '${state.allTasks.length}',
+                    '${state.pendingTasks.length} | ${state.completedTasks.length}',
                     style: const TextStyle(
-                      fontSize: 20,
-                    ),
+                        fontSize: 20, overflow: TextOverflow.ellipsis), maxLines: 2,
                   ),
                   onTap: () {
                     Navigator.pushReplacementNamed(

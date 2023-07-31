@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/screens/recycle_bin.dart';
 import 'package:task_app/screens/tabs_screen.dart';
+import '../screens/pending_screen.dart';
 
-import '../screens/pending_tasks.dart';
 
 
   Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
@@ -12,11 +12,12 @@ import '../screens/pending_tasks.dart';
           settings: routeSettings,
           builder: (_) => const RecycleBin(),
         );
-      case TasksScreen.routeName:
+      case PendingTasksScreen.routeName:
         return MaterialPageRoute(
              settings: routeSettings,
-          builder: (_) => const TasksScreen(),
+          builder: (_) => const PendingTasksScreen(),
         );
+       
          case TabsScreen.routeName:
         return MaterialPageRoute(
              settings: routeSettings,

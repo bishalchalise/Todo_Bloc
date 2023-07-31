@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/services/guid_generator.dart';
-
 import '../bloc/bloc_exports.dart';
 import '../models/task.dart';
 
-class AddTaskScreen extends StatelessWidget {
-    static const routeName = '/add-task-screen'; 
-  const AddTaskScreen({
+class EditTaskScreen extends StatelessWidget {
+  final Task oldTasks;
+  static const routeName = '/edit-task-screen';
+  const EditTaskScreen({
+    required this.oldTasks,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController();
-    TextEditingController descriptionController = TextEditingController();
+    TextEditingController titleController = TextEditingController(text: oldTasks.title);
+    TextEditingController descriptionController = TextEditingController(text: oldTasks.description );
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           const Text(
-            "Add Task",
+            "Edit  Task",
             style: TextStyle(
               fontSize: 24,
             ),
@@ -37,11 +37,13 @@ class AddTaskScreen extends StatelessWidget {
               border: OutlineInputBorder(),
             ),
           ),
-         const  SizedBox(height: 15,),
-           TextField(
+          const SizedBox(
+            height: 15,
+          ),
+          TextField(
             autofocus: true,
             minLines: 3,
-            maxLines: 5, 
+            maxLines: 5,
             controller: descriptionController,
             decoration: const InputDecoration(
               label: Text(
@@ -58,19 +60,24 @@ class AddTaskScreen extends StatelessWidget {
                   child: const Text('Cancel')),
               ElevatedButton(
                   onPressed: () {
-                    var task = Task(
-                      id: GUIDGen.generate(),
-                      date: DateTime.now().toString(),
-                      description: descriptionController.text,
-                      title: titleController.text);
-
+                    var editedTask = Task(
+                        id: oldTasks.id,
+                        isFavourite: oldTasks.isFavourite,
+                        isDone: false,
+                        date: DateTime.now().toString(),
+                        description: descriptionController.text,
+                        title: titleController.text);
 
                     context.read<TasksBloc>().add(
-                          AddTask(task: task),
+                          EditTaskEvent(
+                            
+                            oldTask: oldTasks,
+                            newTask: editedTask,
+                            ),
                         );
                     Navigator.pop(context);
                   },
-                  child: const Text('Add')),
+                  child: const Text('Save')),
             ],
           )
         ],
